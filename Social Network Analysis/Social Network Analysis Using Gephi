@@ -1,0 +1,11 @@
+import networkx as nx
+
+user = df.Username.to_list()
+tweet = df.Text.to_list()
+
+G = nx.Graph() # Graph Kosong Baru
+G.add_nodes_from(user)
+print('Banyak vertex = ', G.number_of_nodes())
+print('Banyak Edges = ', G.number_of_edges())
+
+nx.write_gexf(G, 'pilpres.gexf')
