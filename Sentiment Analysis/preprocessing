@@ -1,0 +1,51 @@
+try:
+    import google.colab
+    print("Installing needed Modules ... ")
+    !pip -q install textblob
+    !pip -q install Sastrawi
+    !pip -q install --user --upgrade nest_asyncio
+    !pip -q install wordcloud
+    !pip -q install torch
+    !pip -q install transformers
+    !pip -q install pytorch_lightning
+    !pip -q install pytorch_lightning(metrics)
+    !pip -q install torchmetrics
+except:
+    print("Running the notebook locally ...  ")
+    pass
+
+
+import re
+import nltk
+import torch
+import requests
+import Sastrawi
+import numpy as np
+import pandas as pd
+import transformers
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import time
+import json
+import datetime
+import random
+import seaborn as sns
+import sklearn.metrics as skm
+import nest_asyncio; nest_asyncio.apply()
+import pytorch_lightning as pl
+
+from typing import Tuple
+from pylab import rcParams
+from matplotlib import rc
+from torch import nn ,cuda
+from nltk import word_tokenize
+from textblob import TextBlob
+from wordcloud import WordCloud
+from transformers import BertModel, BertTokenizer, BertForSequenceClassification, AdamW, BertConfig, get_linear_schedule_with_warmup, TFAutoModelForSequenceClassification, AutoTokenizer
+from torch.utils.data import DataLoader,TensorDataset,Dataset,random_split,RandomSampler, SequentialSampler
+from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
+from torchmetrics.functional import accuracy
+from pytorch_lightning.loggers import TensorBoardLogger
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
