@@ -1,0 +1,62 @@
+# Importing Modules
+import warnings; warnings.simplefilter('ignore')
+import os
+import pandas as pd
+import itertools, re, nltk
+import time, numpy as np, matplotlib.pyplot as plt, pandas as pd, seaborn as sns
+from matplotlib.colors import ListedColormap
+from textblob import TextBlob
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+from unidecode import unidecode
+from nltk.tag import CRFTagger
+from html import unescape
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+import json
+from tqdm import tqdm
+factory = StopWordRemoverFactory()
+stemmer = StemmerFactory().create_stemmer()
+sns.set(style="ticks", color_codes=True)
+random_state = 170
+'Done'
+
+Sastrawi_StopWords_id = factory.get_stop_words()
+print(Sastrawi_StopWords_id)
+print(len(Sastrawi_StopWords_id))
+
+Sastrawi_StopWords_id = set(Sastrawi_StopWords_id)
+Sastrawi_StopWords_id.add(('tak', 'aja', 'mau', 'jadi', 'jangan', 'pak', 'main', 'bukan', 'makin', 'nya'))
+
+nltk.download('punkt')
+
+# Creating a dictionary of indonesian slangs containing a list of abbreviations and their expansions"
+slangS = {'gan':'juragan', 'yg':'yang', 'dg': 'dengan', 'bgt':'banget', 'dgn':'dengan', 'u': 'you', 'ndak':'tidak',
+          'sesok':'besok', 'pd': 'pada', 'utk': 'untuk', 'kpd': 'kepada', 'sbg':'sebagai', 'dpt': 'dapat', 'dlm':'dalam',
+          'jg':'juga', 'kpn': 'kapan', 'dmn':'dimana', 'jgn':'jangan', 'bngt':'banget', 'tnp':'tanpa', 'krn':'karena',
+          'alt': 'alat', 'ttp': 'tetapi', 'tp':'tapi', 'bnyk': 'banyak', 'cept':'cepat', 'dn':'dan', 'propgnda':'propaganda',
+          'ingt':'ingat', 'rkyat':'rakyat', 'shg':'sehingga', 'udh':'udah', 'kli':'kali', 'bsa':'bisa', 'klw':'kalau',
+          'klo':'kalau', 'nga':'tidak', 'mliht':'melihat', 'pmimpin':'pemimpin', 'bukn':'bukan', 'identits':'identitas', 'tdk':'tidak',
+          'org':'orang', 'sp':'siapa', 'dr':'dari', 'mw':'mau', 'gk':'tidak', 'tsb':'tersebut', 'rkyt':'rakyat',
+          'smga':'semoga', 'sgla':'segala', 'klau':'kalau', 'tdak':'tidak', 'klu':'kalau', 'jg':'juga', 'kluyuran':'keluyuran',
+          'dst':'dan seterusnya', 'spt':'seperti', 'tsb':'tersebut', 'pdhl':'padahal', 'hrs':'harus', 'emg':'memang', 'sgnt':'sangat'}
+
+def cleanText(txt):
+    docx = unidecode(unescape(txt.lower().strip()))
+    urlPattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+    docx = re.sub(urlPattern,' ', docx) # Remove links
+    docx = re.sub(r'[^\w]', ' ', docx) # Remove Symbol
+    #Melakukan Tokenisasi
+    Tokens = TextBlob(docx).words
+    for i,t in enumerate(Tokens):
+      if t in slangS.keys():
+        Tokens[i] = slangS[t]
+    # Stopwords Treatment
+    docx = ' '.join([t for t in Tokens if str(t) not in Sastrawi_StopWords_id and len(t)>2])
+    # Stemming
+    docx = stemmer.stem(docx)
+    return docx
+
+df['clean_tweet'] = '' # inititate kolom kosong
+for idx, post in tqdm(df.iterrows()):
+    df.at[idx, 'clean_tweet'] = cleanText(post.Text)
+
+df.drop_duplicates(subset=['clean_tweet'], inplace=True)
