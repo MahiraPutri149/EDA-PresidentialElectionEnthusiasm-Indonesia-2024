@@ -13,6 +13,7 @@ from html import unescape
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 import json
 from tqdm import tqdm
+
 factory = StopWordRemoverFactory()
 stemmer = StemmerFactory().create_stemmer()
 sns.set(style="ticks", color_codes=True)
