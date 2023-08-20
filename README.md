@@ -1,4 +1,4 @@
-<h1> Analysis of Society's Enthusiasm-Presidential Election-Indonesia-2024-Twitter </h1>
+<h1> PresidentialElectionEnthusiasm-Indonesia-2024 </h1>
 <h3> This repository is created to conduct Analysis on the Enthusiasm of the Indonesian Society towards the 2024 Presidential Election in the Republic of Indonesia on Twitter Social Media. </h3>
 
 <p> In an increasingly digital information era, social media has become a crucial platform for various social interactions and public expressions. In the context of Indonesia, as one of the countries with high internet penetration rates, social media plays a central role in reflecting the views and aspirations of the public. One of the significant moments on the national agenda is the Presidential Election in 2024, anticipated to be a significant democratic event for the Republic of Indonesia. </p>
